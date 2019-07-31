@@ -1,0 +1,58 @@
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+http_archive(
+    name = "io_bazel_rules_docker",
+    sha256 = "87fc6a2b128147a0a3039a2fd0b53cc1f2ed5adb8716f50756544a572999ae9a",
+    strip_prefix = "rules_docker-0.8.1",
+    urls = ["https://github.com/bazelbuild/rules_docker/archive/v0.8.1.tar.gz"],
+)
+
+load(
+    "@io_bazel_rules_docker//repositories:repositories.bzl",
+    container_repositories = "repositories",
+)
+
+container_repositories()
+
+load(
+    "@io_bazel_rules_docker//java:image.bzl",
+    _java_image_repos = "repositories",
+)
+
+_java_image_repos()
+
+local_repository(
+    name = "com_github_iljakroonen_rules_run",
+    path = "..",
+)
+
+load("@com_github_iljakroonen_rules_run//repositories:repositories.bzl", "run_repositories")
+
+run_repositories()
+
+RULES_JVM_EXTERNAL_TAG = "2.5"
+
+RULES_JVM_EXTERNAL_SHA = "249e8129914be6d987ca57754516be35a14ea866c616041ff0cd32ea94d2f3a1"
+
+http_archive(
+    name = "rules_jvm_external",
+    sha256 = RULES_JVM_EXTERNAL_SHA,
+    strip_prefix = "rules_jvm_external-%s" % RULES_JVM_EXTERNAL_TAG,
+    url = "https://github.com/bazelbuild/rules_jvm_external/archive/%s.zip" % RULES_JVM_EXTERNAL_TAG,
+)
+
+load("@rules_jvm_external//:defs.bzl", "maven_install")
+
+maven_install(
+    artifacts = [
+        "io.javalin:javalin:3.3.0",
+    ],
+    maven_install_json = "//:maven_install.json",
+    repositories = [
+        "https://repo1.maven.org/maven2",
+    ],
+)
+
+load("@maven//:defs.bzl", "pinned_maven_install")
+
+pinned_maven_install()

@@ -1,0 +1,39 @@
+options:
+  thirdPartyDirectory: "third_party/jvm"
+  buildHeader:
+    - licenses(["notice"])
+  resolvers:
+    - id: "mavencentral"
+      type: "default"
+      url: https://repo.maven.apache.org/maven2/
+  resolverType: coursier
+  transitivity: runtime_deps
+  versionConflictPolicy: highest
+  namePrefix: "com_google_github_iljakroonen_rules_run"
+
+dependencies:
+  com.google.auth:
+    google-auth-library-oauth2-http:
+      lang: java
+      version: "0.16.2"
+    google-auth-library-credentials:
+      lang: java
+      version: "0.16.2"
+  com.google.http-client:
+    google-http-client:
+      lang: java
+      version: "1.30.2"
+    google-http-client-jackson2:
+      lang: java
+      version: "1.30.2"
+  com.fasterxml.jackson.core:
+    jackson-core:
+      lang: java
+      version: "2.9.9"
+    jackson-databind:
+      lang: java
+      version: "2.9.9"
+  net.sourceforge.argparse4j:
+    argparse4j:
+      lang: java
+      version: "0.8.1"
