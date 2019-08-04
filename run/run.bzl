@@ -31,6 +31,7 @@ def _run_deployment_impl(ctx):
             "{PROJECT_ID}": ctx.attr.project_id,
             "{SERVICE_NAME_PREFIX}": service_name_prefix,
             "{SERVICE_ACCOUNT_FILE}": ctx.file.service_account_file.short_path,
+            "{GENERATE_UNIQUE_NAME}": str(ctx.attr.generate_unique_name),
         },
         is_executable = False,
     )
@@ -80,6 +81,9 @@ run_deployment = rule(
         "service_account_file": attr.label(
             allow_single_file = True,
             mandatory = True,
+        ),
+        "generate_unique_name": attr.bool(
+            default = True,
         ),
         "_deploy_template": attr.label(
             default = Label("//run:deploy.sh"),

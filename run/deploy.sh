@@ -46,7 +46,12 @@ full_image="{IMAGE}@$(cat ${push}.digest)"
 
 service_digest="$(printf "${full_image}_${env_vars_string}_{MEMORY}_{CONCURRENCY}" | sha256sum | cut -d" " -f1)"
 service_name_prefix="{SERVICE_NAME_PREFIX}"
-service_name="${service_name_prefix}-${service_digest:0:32}" # Service names must be 63 characters or less and start with a letter
+if [[ "{GENERATE_UNIQUE_NAME}" = "True" ]]
+then
+    service_name="${service_name_prefix}-${service_digest:0:32}" # Service names must be 63 characters or less and start with a letter
+else
+    service_name="${service_name_prefix}"
+fi
 
 printf "Publishing service with image ${full_image} as service ${service_name}\n"
 export DOCKER_CONFIG=${docker_config}
