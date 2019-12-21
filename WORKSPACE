@@ -1,5 +1,5 @@
 workspace(
-    name = "rules_run",
+    name = "com_github_iljakroonen_rules_run",
 )
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive", "http_jar")
