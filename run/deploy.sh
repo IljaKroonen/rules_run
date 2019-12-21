@@ -37,8 +37,9 @@ docker_config=$(mktemp -d)
 files_to_be_deleted="${files_to_be_deleted} ${docker_config}"
 
 printf '{"auths": {"eu.gcr.io": {"auth":"' > "${docker_config}/config.json"
-printf "_json_key:$(cat ${credentials})" | base64 -w0 >> "${docker_config}/config.json"
-printf '"}}}' >> "${docker_config}/config.json"
+# We use echo here because we don't want printf to interpret formatting strings in the credentials
+echo -n "_json_key:$(cat ${credentials})" | base64 -w0 >> "${docker_config}/config.json"
+printf '"}}}\n' >> "${docker_config}/config.json"
 
 push="{PUSH_IMAGE}"
 
