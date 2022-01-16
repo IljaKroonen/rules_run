@@ -1,0 +1,15 @@
+{
+	"name": "Ubuntu",
+	"build": {
+		"dockerfile": "Dockerfile"
+	},
+	"settings": {},
+	"extensions": [
+		"bazelbuild.vscode-bazel"
+	],
+	"forwardPorts": [],
+	"remoteUser": "vscode",
+	"mounts": [
+		"type=volume,src=rules-run-gcloud-dev,dst=/home/vscode/.config/gcloud"
+	]
+}
