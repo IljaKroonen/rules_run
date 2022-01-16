@@ -10,3 +10,15 @@ java_library(
 )
 
 
+
+java_library(
+    name = "checker_qual",
+    exports = [
+        "//external:jar/com_google_github_iljakroonen_rules_runorg/checkerframework/checker_qual"
+    ],
+    visibility = [
+        "//third_party/jvm:__subpackages__"
+    ]
+)
+
+

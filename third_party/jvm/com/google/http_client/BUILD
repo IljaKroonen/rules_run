@@ -10,10 +10,27 @@ java_library(
         "//third_party/jvm/com/google/j2objc:j2objc_annotations",
         "//third_party/jvm/io/opencensus:opencensus_api",
         "//third_party/jvm/io/opencensus:opencensus_contrib_http_util",
-        "//third_party/jvm/org/apache/httpcomponents:httpclient"
+        "//third_party/jvm/org/apache/httpcomponents:httpclient",
+        "//third_party/jvm/org/apache/httpcomponents:httpcore"
     ],
     visibility = [
         "//visibility:public"
+    ]
+)
+
+
+
+java_library(
+    name = "google_http_client_gson",
+    exports = [
+        "//external:jar/com_google_github_iljakroonen_rules_runcom/google/http_client/google_http_client_gson"
+    ],
+    runtime_deps = [
+        "//third_party/jvm/com/google/code/gson:gson",
+        ":google_http_client"
+    ],
+    visibility = [
+        "//third_party/jvm:__subpackages__"
     ]
 )
 

@@ -21,7 +21,7 @@ java_library(
         "//third_party/jvm/com/google/errorprone:error_prone_annotations",
         "//third_party/jvm/com/google/j2objc:j2objc_annotations",
         "//third_party/jvm/org/checkerframework:checker_compat_qual",
-        "//third_party/jvm/org/codehaus/mojo:animal_sniffer_annotations",
+        "//third_party/jvm/org/checkerframework:checker_qual",
         ":failureaccess",
         ":listenablefuture"
     ],

@@ -15,25 +15,25 @@ dependencies:
   com.google.auth:
     google-auth-library-oauth2-http:
       lang: java
-      version: "0.16.2"
+      version: "1.3.0"
     google-auth-library-credentials:
       lang: java
-      version: "0.16.2"
+      version: "1.3.0"
   com.google.http-client:
     google-http-client:
       lang: java
-      version: "1.30.2"
+      version: "1.41.0"
     google-http-client-jackson2:
       lang: java
-      version: "1.30.2"
+      version: "1.41.0"
   com.fasterxml.jackson.core:
     jackson-core:
       lang: java
-      version: "2.9.9"
+      version: "2.13.1"
     jackson-databind:
       lang: java
-      version: "2.9.9"
+      version: "2.13.1"
   net.sourceforge.argparse4j:
     argparse4j:
       lang: java
-      version: "0.8.1"
+      version: "0.9.0"
