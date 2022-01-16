@@ -30,7 +30,6 @@ def _run_deployment_impl(ctx):
             "{MEMORY}": ctx.attr.memory,
             "{PROJECT_ID}": ctx.attr.project_id,
             "{SERVICE_NAME_PREFIX}": service_name_prefix,
-            "{SERVICE_ACCOUNT_FILE}": ctx.file.service_account_file.short_path,
             "{GENERATE_UNIQUE_NAME}": str(ctx.attr.generate_unique_name),
         },
         is_executable = False,
@@ -38,7 +37,6 @@ def _run_deployment_impl(ctx):
 
     runfiles = ctx.runfiles(
         files = [
-            ctx.file.service_account_file,
             ctx.attr.image_push[PushInfo].digest,
         ] + ctx.attr.image_push[DefaultInfo].files.to_list(),
     )
@@ -78,10 +76,6 @@ run_deployment = rule(
             mandatory = True,
         ),
         "deps": attr.label_keyed_string_dict(),
-        "service_account_file": attr.label(
-            allow_single_file = True,
-            mandatory = True,
-        ),
         "generate_unique_name": attr.bool(
             default = True,
         ),

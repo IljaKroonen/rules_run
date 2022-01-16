@@ -2,7 +2,17 @@
 
 set -e
 
-credentials="{SERVICE_ACCOUNT_FILE}"
+credentials="{GOOGLE_APPLICATION_CREDENTIALS}"
+
+if [[ ! -f "$credentials" ]]
+then
+    credentials="$HOME/.config/gcloud/application_default_credentials.json"
+    if [[ ! -f "$credentials" ]]
+    then
+        printf "Credentials file could not be resolved from passed service_account or from GOOGLE_APPLICATION_CREDENTIALS env var / gcloud save location\n"
+        exit 1
+    fi
+fi
 
 files_to_be_deleted=""
 function finish {
@@ -33,14 +43,6 @@ do
     fi
 done
 
-docker_config=$(mktemp -d)
-files_to_be_deleted="${files_to_be_deleted} ${docker_config}"
-
-printf '{"auths": {"eu.gcr.io": {"auth":"' > "${docker_config}/config.json"
-# We use echo here because we don't want printf to interpret formatting strings in the credentials
-echo -n "_json_key:$(cat ${credentials})" | base64 -w0 >> "${docker_config}/config.json"
-printf '"}}}\n' >> "${docker_config}/config.json"
-
 push="{PUSH_IMAGE}"
 
 full_image="{IMAGE}@$(cat ${push}.digest)"
@@ -55,7 +57,6 @@ else
 fi
 
 printf "Publishing service with image ${full_image} as service ${service_name}\n"
-export DOCKER_CONFIG=${docker_config}
 ./${push}
 
 url_file=$(mktemp)

@@ -86,16 +86,18 @@ public class CloudRunClient {
         while (startTs.plus(timeout).isAfter(Instant.now())) {
             Thread.sleep(500);
 
-            String describeServiceUri = "https://" + region + "-run.googleapis.com/apis/serving.knative.dev/v1alpha1/namespaces/" + projectId + "/services/" + serviceName;
+            String describeServiceUri = "https://" + region + "-run.googleapis.com/apis/serving.knative.dev/v1/namespaces/" + projectId + "/services/" + serviceName;
             HttpRequest describeServiceRequest = configureRequest(requestFactory.buildGetRequest(new GenericUrl(describeServiceUri)));
 
             HttpResponse describeServiceResponse = describeServiceRequest.execute();
 
             JsonNode responseJson = mapper.readTree(describeServiceResponse.getContent());
             JsonNode status = responseJson.get("status");
-
-            if (responseJson.has("status") && responseJson.get("status").has("address") && responseJson.get("status").get("address").has("hostname")) {
-                return status.get("address").get("hostname").asText();
+            JsonNode conditions = status.get("conditions");
+            for (JsonNode condition: conditions) {
+                if (condition.get("type").asText().equals("Ready") && condition.get("status").asText().equals("True")) {
+                    return status.get("url").asText();
+                }
             }
         }
 
@@ -106,7 +108,7 @@ public class CloudRunClient {
             String projectId,
             String serviceName
     ) throws IOException {
-        String setIamUri = "https://" + region + "-run.googleapis.com/v1alpha1/projects/" + projectId + "/locations/" + region + "/services/" + serviceName + ":setIamPolicy";
+        String setIamUri = "https://" + region + "-run.googleapis.com/v1/projects/" + projectId + "/locations/" + region + "/services/" + serviceName + ":setIamPolicy";
         HttpRequest setIamRequest = configureRequest(requestFactory.buildPostRequest(new GenericUrl(setIamUri), new ByteArrayContent(
                 "application/json",
                 buildIamPolicyBody()
@@ -122,7 +124,7 @@ public class CloudRunClient {
             String memory,
             int concurrency
     ) throws IOException {
-        String updateUri = "https://" + region + "-run.googleapis.com/apis/serving.knative.dev/v1alpha1/namespaces/" + projectId + "/services/" + serviceName;
+        String updateUri = "https://" + region + "-run.googleapis.com/apis/serving.knative.dev/v1/namespaces/" + projectId + "/services/" + serviceName;
 
         HttpRequest updateRequest = configureRequest(requestFactory.buildPutRequest(new GenericUrl(updateUri), new ByteArrayContent(
                 "application/json",
@@ -144,7 +146,7 @@ public class CloudRunClient {
             String memory,
             int concurrency
     ) throws IOException {
-        String createUri = "https://" + region + "-run.googleapis.com/apis/serving.knative.dev/v1alpha1/namespaces/" + projectId + "/services";
+        String createUri = "https://" + region + "-run.googleapis.com/apis/serving.knative.dev/v1/namespaces/" + projectId + "/services";
 
         HttpRequest createRequest = configureRequest(requestFactory.buildPostRequest(new GenericUrl(createUri), new ByteArrayContent(
                 "application/json",
@@ -179,7 +181,7 @@ public class CloudRunClient {
     ) throws IOException {
         ObjectNode node = mapper.createObjectNode();
 
-        node.set("apiVersion", new TextNode("serving.knative.dev/v1alpha1"));
+        node.set("apiVersion", new TextNode("serving.knative.dev/v1"));
         node.set("kind", new TextNode("Service"));
 
         ObjectNode metadataNode = mapper.createObjectNode();
