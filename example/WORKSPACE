@@ -30,9 +30,9 @@ load("@com_github_iljakroonen_rules_run//repositories:repositories.bzl", "run_re
 
 run_repositories()
 
-RULES_JVM_EXTERNAL_TAG = "2.5"
+RULES_JVM_EXTERNAL_TAG = "4.2"
 
-RULES_JVM_EXTERNAL_SHA = "249e8129914be6d987ca57754516be35a14ea866c616041ff0cd32ea94d2f3a1"
+RULES_JVM_EXTERNAL_SHA = "cd1a77b7b02e8e008439ca76fd34f5b07aecb8c752961f9640dea15e9e5ba1ca"
 
 http_archive(
     name = "rules_jvm_external",
@@ -45,7 +45,7 @@ load("@rules_jvm_external//:defs.bzl", "maven_install")
 
 maven_install(
     artifacts = [
-        "io.javalin:javalin:3.3.0",
+        "io.javalin:javalin:4.3.0",
     ],
     maven_install_json = "//:maven_install.json",
     repositories = [
