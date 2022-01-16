@@ -47,7 +47,6 @@ run_deployment(
     name = "deploy_dep",
     image_push = ":push_dep",
     project_id = "rules-run-dev",
-    service_account_file = "developer.json",
 )
 
 java_image(
@@ -71,7 +70,6 @@ run_deployment(
     name = "deploy_example",
     image_push = ":push_example",
     project_id = "rules-run-dev",
-    service_account_file = "developer.json",
     deps = {
         ":deploy_dep": "DEP",
     },
