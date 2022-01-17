@@ -9,12 +9,12 @@ In addition to rules_docker, add the following to your WORKSPACE file to add the
 RULES_RUN_TAG="commit_hash_or_tag"
 
 http_archive(
-    name = "rules_run",
+    name = "com_github_iljakroonen_rules_run",
     strip_prefix = "rules_run-%s" % RULES_RUN_TAG,
     url = "https://github.com/iljakroonen/rules_run/archive/%s.zip" % RULES_RUN_TAG,
 )
 
-load("@rules_run//repositories:repositories.bzl", "run_repositories")
+load("@com_github_iljakroonen_rules_run//repositories:repositories.bzl", "run_repositories")
 
 run_repositories()
 ```
